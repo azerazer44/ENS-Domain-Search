@@ -1,0 +1,32 @@
+from ens import ENS
+from web3 import Web3
+import discord
+from discord.ext import commands
+
+client = commands.Bot(command_prefix = '$')
+
+url ="INFURA LINK"
+w3 = Web3(Web3.HTTPProvider(url))
+ns = ENS.fromWeb3(w3)
+print('Connected?', w3.isConnected())
+
+@client.event
+async def on_ready():
+    print('bot hazir')
+
+@client.command()
+async def ens(ctx,*args):
+
+   for a in args:
+
+        eth_address = ns.owner(f'{a}.eth')
+
+        if eth_address == "0x0000000000000000000000000000000000000000" :
+
+            await ctx.send(f"{a} kayıtlı değil")
+
+        else :
+
+            await ctx.send(f"{a} kayıtlı , sahibi = {eth_address}")
+
+client.run("TOKEN")
